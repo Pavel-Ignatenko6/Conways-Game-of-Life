@@ -1,0 +1,30 @@
+
+.header,
+.footer {
+  background-color: #0fc390;
+}
+
+
+/*****************************
+Footer 
+******************************/
+
+.footer {
+  position: relative;
+  height: 4rem;
+  text-align: center;
+}
+
+.footer-text {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+}
+
+.footer-link {
+  text-decoration: none;
+  color: #5855e9;
+}
