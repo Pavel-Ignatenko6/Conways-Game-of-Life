@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import './App.css'
 import { Header } from './layout/Header.jsx'
 import { Footer } from './layout/Footer.jsx'
 import { ButtonsPanel } from './ButtonsPanel.jsx'
 import  { Controls }  from './Controls.jsx'
-export function App() {
+
+import { useDispatch, useSelector } from 'react-redux'
+import { runningValue, toggleRunning } from './state/runningSlice.js'
+
+
+  function App() {
   const numCols = 75
   const numRows = 25
 
@@ -13,9 +18,52 @@ export function App() {
     for (let i = 0; i < numRows; i++) {
       rows.push(Array.from(Array(numCols), () => 0))
     }
-    console.log(rows)
     return rows
   })
+
+  // a state value from the store
+  const running = useSelector(runningValue)
+
+  const operations = [
+    [0, 1],
+    [0, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [-1, -1],
+    [1, 0],
+    [-1, 0],
+  ]
+  const newGrid = [...grid]
+
+  const startGame = useCallback(() => {
+    // if the state from the store is false
+    if (!running) {
+      return
+    }
+    // play the game
+    setGrid(prevGrid => {
+      for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numCols; j++) {
+          let neighbors = 0;
+          operations.forEach(([x, y]) => {
+            const updatedI = i + x
+            const updatedJ = j + y
+            if (updatedI >= 0 && updatedI < numRows && updatedJ >= 0 && updatedJ < numCols) {
+              neighbors += prevGrid[updatedI][updatedJ]
+            }
+          })
+
+          if (neighbors < 2 || neighbors > 3) {
+            newGrid[i][j] = 0
+          } else if (prevGrid[i][j] === 0 && neighbors === 3) {
+            newGrid[i][j] = 1
+          }
+        }
+      }
+    })
+    setTimeout(startGame, 100)
+  }, [])
 
   return (
     <>
@@ -43,10 +91,12 @@ export function App() {
             )
           })
         })}
-        <Controls />
+        <Controls startGame={startGame} />
       </div>
       <ButtonsPanel />
       <Footer />
     </>
   )
 }
+
+export default App
