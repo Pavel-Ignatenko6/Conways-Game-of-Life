@@ -1,5 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
+import runningReducer from './runningSlice'
 
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        running: runningReducer 
+    },
 })
