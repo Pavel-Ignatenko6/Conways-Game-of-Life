@@ -12,12 +12,9 @@ function App() {
   const numCols = 75
   const numRows = 25
 
+  // добавить state в редакс или найти способ добавить setGrid в пропсы
   const [grid, setGrid] = useState(() => {
-    const rows = []
-    for (let i = 0; i < numRows; i++) {
-      rows.push(Array.from(Array(numCols), () => 0))
-    }
-    return rows
+    return resetGameField()
   })
 
   // a state value from the store
@@ -38,12 +35,19 @@ function App() {
     [-1, 0],
   ]
 
+  function resetGameField() {
+    const rows = []
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => 0))
+    }
+    return rows
+  }
+
   const startGame = useCallback(() => {
     // if the state from the store is false
     if (!runningRef.current) {
       return
     }
-
     // play the game
     setGrid(prevGrid => {
       const updatedGrid = prevGrid.map((row, i) =>
@@ -99,7 +103,7 @@ function App() {
         })}
         <Controls startGame={startGame} runningRef={runningRef} />
       </div>
-      <ButtonsPanel />
+      <ButtonsPanel resetGameField={resetGameField} setGrid={setGrid} />
       <Footer />
     </>
   )
