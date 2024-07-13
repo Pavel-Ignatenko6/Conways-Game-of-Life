@@ -6,19 +6,19 @@ const generationCountSlice = createSlice({
         value: 0,
     },
     reducers: {
-        nextStep: (state) => {
+        incrementGen: (state) => {
             state.value += 1
         },
-        prevStep: (state) => {
+        decrementGen: (state) => {
             state.value -= 1
         },
-        reset: (state) => {
+        resetGen: (state) => {
             state.value = 0
-        }
-    }
+        },
+    },
 })
 
-export const { nextStep, prevStep, reset } = generationCountSlice.actions;
+export const { incrementGen, decrementGen, resetGen } = generationCountSlice.actions
 export default generationCountSlice.reducer;
 
 export const generationValue = (state) => state.generationCount.value;
