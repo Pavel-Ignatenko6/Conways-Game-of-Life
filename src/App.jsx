@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import './App.css'
 import { Header } from './layout/Header.jsx'
 import { Footer } from './layout/Footer.jsx'
@@ -7,6 +7,9 @@ import { Controls } from './Controls.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
+import { generationValue, incrementGen } from './state/generationCountSlice.js'
+
+import { addToLocalStorage } from './helpers/handleLocalStorage.js'
 
 function App() {
   const numCols = 75
@@ -18,7 +21,9 @@ function App() {
   })
 
   // a state value from the store
+  const dispatch = useDispatch()
   const running = useSelector(runningValue)
+  const genCount = useSelector(generationValue)
 
   // a reference to the state value to avoid unnecessary re-renders
   const runningRef = useRef(running)
@@ -43,7 +48,13 @@ function App() {
     return rows
   }
 
+  useEffect(() => {
+    addToLocalStorage(genCount, grid)
+    console.log(genCount)
+  }, [genCount, grid])
+
   const stepForward = () => {
+    dispatch(incrementGen())
     setGrid(prevGrid => {
       const updatedGrid = prevGrid.map((row, i) =>
         row.map((cell, j) => {
@@ -65,6 +76,7 @@ function App() {
           }
         })
       )
+      addToLocalStorage(genCount, updatedGrid)
       return updatedGrid
     })
   }
