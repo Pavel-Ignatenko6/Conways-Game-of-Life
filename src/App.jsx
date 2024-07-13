@@ -43,12 +43,7 @@ function App() {
     return rows
   }
 
-  const startGame = useCallback(() => {
-    // if the state from the store is false
-    if (!runningRef.current) {
-      return
-    }
-    // play the game
+  const stepForward = () => {
     setGrid(prevGrid => {
       const updatedGrid = prevGrid.map((row, i) =>
         row.map((cell, j) => {
@@ -72,6 +67,15 @@ function App() {
       )
       return updatedGrid
     })
+  }
+
+  const startGame = useCallback(() => {
+    // if the state from the store is false
+    if (!runningRef.current) {
+      return
+    }
+    // play the game
+    stepForward()
     setTimeout(startGame, 100)
   }, [])
 
@@ -101,7 +105,7 @@ function App() {
             )
           })
         })}
-        <Controls startGame={startGame} runningRef={runningRef} />
+        <Controls startGame={startGame} runningRef={runningRef} stepForward={stepForward} />
       </div>
       <ButtonsPanel resetGameField={resetGameField} setGrid={setGrid} />
       <Footer />
