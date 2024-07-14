@@ -7,9 +7,9 @@ import { Controls } from './Controls.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
-import { generationValue, incrementGen } from './state/generationCountSlice.js'
+import { decrementGen, incrementGen, generationValue } from './state/generationCountSlice.js'
 
-import { addToLocalStorage } from './helpers/handleLocalStorage.js'
+import { addToLocalStorage, getFromLocalStorage } from './helpers/handleLocalStorage.js'
 
 function App() {
   const numCols = 75
@@ -50,7 +50,6 @@ function App() {
 
   useEffect(() => {
     addToLocalStorage(genCount, grid)
-    console.log(genCount)
   }, [genCount, grid])
 
   const stepForward = () => {
@@ -79,6 +78,11 @@ function App() {
       addToLocalStorage(genCount, updatedGrid)
       return updatedGrid
     })
+  }
+
+  const stepBack = () => {
+    const prevGrid = getFromLocalStorage(genCount - 1)
+    setGrid(prevGrid)
   }
 
   const startGame = useCallback(() => {
@@ -117,7 +121,7 @@ function App() {
             )
           })
         })}
-        <Controls startGame={startGame} runningRef={runningRef} stepForward={stepForward} />
+        <Controls startGame={startGame} runningRef={runningRef} stepForward={stepForward} stepBack={stepBack} />
       </div>
       <ButtonsPanel resetGameField={resetGameField} setGrid={setGrid} />
       <Footer />
