@@ -25,10 +25,6 @@ function App() {
   const running = useSelector(runningValue)
   const genCount = useSelector(generationValue)
 
-  // a reference to the state value to avoid unnecessary re-renders
-  const runningRef = useRef(running)
-  runningRef.current = running
-
   const operations = [
     [0, 1],
     [0, -1],
@@ -48,11 +44,8 @@ function App() {
     return rows
   }
 
-  useEffect(() => {
-    addToLocalStorage(genCount, grid)
-  }, [genCount, grid])
-
-  const stepForward = () => {
+  // start game and move it forward by a step
+  const startGame = dispatch => {
     dispatch(incrementGen())
     setGrid(prevGrid => {
       const updatedGrid = prevGrid.map((row, i) =>
@@ -85,15 +78,12 @@ function App() {
     setGrid(prevGrid)
   }
 
-  const startGame = useCallback(() => {
-    // if the state from the store is false
-    if (!runningRef.current) {
-      return
+  useEffect(() => {
+    if (running) {
+      setTimeout(() => startGame(dispatch), 100)
+      addToLocalStorage(genCount, grid)
     }
-    // play the game
-    stepForward()
-    setTimeout(startGame, 100)
-  }, [])
+  }, [running, grid])
 
   return (
     <>
@@ -121,7 +111,7 @@ function App() {
             )
           })
         })}
-        <Controls startGame={startGame} runningRef={runningRef} stepForward={stepForward} stepBack={stepBack} />
+        <Controls startGame={startGame} stepBack={stepBack} />
       </div>
       <ButtonsPanel resetGameField={resetGameField} setGrid={setGrid} />
       <Footer />

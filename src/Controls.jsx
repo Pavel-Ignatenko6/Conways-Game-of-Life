@@ -1,6 +1,7 @@
 import './styleControls.css'
 import { Slider } from './Slider/Slider.jsx'
 
+import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { decrementGen, generationValue } from './state/generationCountSlice.js'
@@ -13,10 +14,15 @@ import pauseIcon from './assets/pause-solid.svg'
 import speedIcon from './assets/gauge-high-solid.svg'
 import zoomIcon from './assets/magnifying-glass-solid.svg'
 
-export const Controls = ({ startGame, runningRef, stepForward, stepBack }) => {
+export const Controls = ({ startGame, stepBack }) => {
   const dispatch = useDispatch()
   const running = useSelector(runningValue)
   const genCount = useSelector(generationValue)
+
+  // a reference to the state value to avoid unnecessary re-renders
+  const runningRef = useRef(running)
+  runningRef.current = running
+
   return (
     <div className="controls-container">
       <div className="generation-number flex-container">
@@ -56,7 +62,7 @@ export const Controls = ({ startGame, runningRef, stepForward, stepBack }) => {
               dispatch(toggleRunning())
               if (!running) {
                 runningRef.current = true
-                startGame()
+                startGame(dispatch)
               }
             }}
           />
@@ -71,7 +77,7 @@ export const Controls = ({ startGame, runningRef, stepForward, stepBack }) => {
             if (running) {
               dispatch(toggleRunning())
             }
-            stepForward()
+            startGame(dispatch)
           }}
         />
       </div>

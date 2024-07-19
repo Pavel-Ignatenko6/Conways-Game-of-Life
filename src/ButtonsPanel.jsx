@@ -2,6 +2,7 @@ import './styleButtonsPanel.css'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
+import { resetGen } from './state/generationCountSlice.js'
 
 export const ButtonsPanel = ({ resetGameField, setGrid }) => {
   const dispatch = useDispatch()
@@ -11,11 +12,10 @@ export const ButtonsPanel = ({ resetGameField, setGrid }) => {
       <button className="check-rules-btn btn">Check rules</button>
       <button className="clear-btn btn" onClick={() => {
         if (running) {
-          dispatch(toggleRunning(false));
-          setGrid(resetGameField());
-        } else {
-          setGrid(resetGameField());
+          dispatch(toggleRunning());
         }
+        setGrid(resetGameField());
+        dispatch(resetGen())
         }}>
         Clear
       </button>
