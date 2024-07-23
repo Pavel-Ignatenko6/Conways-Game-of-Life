@@ -1,11 +1,9 @@
 import './styleControls.css'
 import { Slider } from './Slider/Slider.jsx'
 
-import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
-import { decrementGen, generationValue } from './state/generationCountSlice.js'
-
+import { generationValue } from './state/generationCountSlice.js'
 // icons
 import generationIcon from './assets/users-solid.svg'
 import prevNextIcon from './assets/forward-solid.svg'
@@ -14,14 +12,10 @@ import pauseIcon from './assets/pause-solid.svg'
 import speedIcon from './assets/gauge-high-solid.svg'
 import zoomIcon from './assets/magnifying-glass-solid.svg'
 
-export const Controls = ({ startGame, stepBack }) => {
+export const Controls = ({ stepForward, stepBack }) => {
   const dispatch = useDispatch()
   const running = useSelector(runningValue)
   const genCount = useSelector(generationValue)
-
-  // a reference to the state value to avoid unnecessary re-renders
-  const runningRef = useRef(running)
-  runningRef.current = running
 
   return (
     <div className="controls-container">
@@ -31,41 +25,18 @@ export const Controls = ({ startGame, stepBack }) => {
       </div>
       {/* main controls */}
       <div className="main-controls flex-container">
-        <img
-          className="previous-icon controls-icon"
-          src={prevNextIcon}
-          alt="arrow left"
-          onClick={() => {
-            dispatch(decrementGen())
-            stepBack()
-          }}
-        />
+        <img className="previous-icon controls-icon" src={prevNextIcon} alt="arrow left" onClick={() => {
+          if (running) {
+            dispatch(toggleRunning())
+          }
+          stepBack()
+        }} />
 
         {/* play / Stop icons */}
         {running ? (
-          <img
-            className="controls-icon"
-            src={pauseIcon}
-            alt="pause icon"
-            onClick={() => {
-              if (running) {
-                dispatch(toggleRunning())
-              }
-            }}
-          />
+          <img className="controls-icon" src={pauseIcon} alt="pause icon" onClick={() => dispatch(toggleRunning())} />
         ) : (
-          <img
-            className="play-icon controls-icon"
-            src={playIcon}
-            alt="play icon"
-            onClick={() => {
-              dispatch(toggleRunning())
-              if (!running) {
-                runningRef.current = true
-                startGame(dispatch)
-              }
-            }}
-          />
+          <img className="play-icon controls-icon" src={playIcon} alt="play icon" onClick={() => dispatch(toggleRunning())} />
         )}
         {/* end of play / Stop icons */}
 
@@ -77,7 +48,7 @@ export const Controls = ({ startGame, stepBack }) => {
             if (running) {
               dispatch(toggleRunning())
             }
-            startGame(dispatch)
+            stepForward()
           }}
         />
       </div>
