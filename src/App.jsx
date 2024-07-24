@@ -33,6 +33,10 @@ function App() {
     [-1, 0],
   ]
 
+  function setGridHandler(newGrid) {
+    setGrid(newGrid)
+  }
+
   function resetGameField() {
     const rows = []
     for (let i = 0; i < numRows; i++) {
@@ -116,7 +120,7 @@ function App() {
         })}
         <Controls stepForward={stepForward} stepBack={stepBack} />
       </div>
-      <ButtonsPanel resetGameField={resetGameField} setGrid={setGrid} />
+      <ButtonsPanel resetGameField={resetGameField} setGridHandler={setGridHandler} />
       <Footer />
     </>
   )

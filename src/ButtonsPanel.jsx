@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { resetGen } from './state/generationCountSlice.js'
 
-export const ButtonsPanel = ({ resetGameField, setGrid }) => {
+export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   const dispatch = useDispatch()
   const running = useSelector(runningValue)
   return (
@@ -14,7 +14,7 @@ export const ButtonsPanel = ({ resetGameField, setGrid }) => {
         if (running) {
           dispatch(toggleRunning());
         }
-        setGrid(resetGameField());
+        setGridHandler([resetGameField()]);
         dispatch(resetGen())
         }}>
         Clear
