@@ -1,0 +1,71 @@
+.modal-container {
+  position: absolute;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(60, 60, 60, 0.8);
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #c5c9d5;
+  width: 60%;
+  height: 90%;
+  padding: 0 2rem 3rem 2rem;
+  overflow: auto;
+  border: 1px solid yellow;
+}
+
+.close-btn-container {
+  background-color: #c5c9d5e2;
+  display: flex;
+  justify-content: flex-end;
+  position:sticky;
+  top: 0;
+  right: 0;
+  padding: .5rem 0;
+}
+
+.close-btn {
+  cursor: pointer;
+  padding: .3rem 1.5rem;
+  border-radius: 2rem;
+  border: none;
+  margin-right: 1rem;
+}
+
+.close-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.paragraph {
+  font-size: 1.2rem;
+  margin: 1rem 0; 
+}
+
+.rules-list {
+  border: 1px solid black;
+  padding: 0 1rem;
+  margin: 2rem 0;
+}
+
+.subheading {
+  display: block;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.single-rule {
+  margin: 0.5rem 0;
+  font-size: 1.2rem;
+}

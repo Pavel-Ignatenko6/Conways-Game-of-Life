@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import './App.css'
-import { Header } from './layout/Header.jsx'
-import { Footer } from './layout/Footer.jsx'
 import { ButtonsPanel } from './ButtonsPanel.jsx'
 import { Controls } from './Controls.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue } from './state/runningSlice.js'
 import { decrementGen, incrementGen } from './state/generationCountSlice.js'
+
+import { Outlet } from 'react-router-dom'
 
 function App() {
   const numCols = 75
@@ -94,7 +94,7 @@ function App() {
 
   return (
     <>
-      <Header />
+    <Outlet />
       <div
         className="grid-field"
         style={{
@@ -121,7 +121,6 @@ function App() {
         <Controls stepForward={stepForward} stepBack={stepBack} />
       </div>
       <ButtonsPanel resetGameField={resetGameField} setGridHandler={setGridHandler} />
-      <Footer />
     </>
   )
 }
