@@ -11,8 +11,9 @@ import { store } from './state/store'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Layout } from './layout/Layout.jsx'
 import { NotFoundPage } from './ErrorPage/NotFoundPage.jsx'
-import { RulesModal } from './modals/RulesModal.jsx'
-import { SettingsModal } from './modals/SettingsModal.jsx'
+import { ModalElement } from './modals/ModalElement.jsx'
+import { Rules } from './modals/Rules.jsx'
+import { Settings } from './modals/Settings.jsx'
 
 const router = createBrowserRouter([
   {
@@ -25,11 +26,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/rules',
-            element: <RulesModal />,
+            element: <ModalElement children={<Rules />} />,
           },
           {
             path: '/settings',
-            element: <SettingsModal />,
+            element: <ModalElement children={<Settings />} />,
           },
         ],
       },
