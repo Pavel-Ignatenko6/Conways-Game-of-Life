@@ -1,0 +1,28 @@
+.heading {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.paragraph {
+  line-height: 1.3;
+  margin: 1rem 0; 
+}
+
+.rules-list {
+  border: 1px solid black;
+  padding: 0 1rem;
+  margin: 2rem 0;
+}
+
+.subheading {
+  display: block;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.single-rule {
+  margin: 0.5rem 0;
+}
