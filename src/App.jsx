@@ -4,16 +4,17 @@ import { ButtonsPanel } from './ButtonsPanel.jsx'
 import { Controls } from './Controls.jsx'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { runningValue } from './state/runningSlice.js'
-import { decrementGen, incrementGen } from './state/generationCountSlice.js'
+import { runningValue, toggleRunning } from './state/runningSlice.js'
+import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js'
 
 import { Outlet } from 'react-router-dom'
 
 function App() {
   const numCols = 75
-  const numRows = 25
+  const numRows = 35
 
-  // добавить state в редакс или найти способ добавить setGrid в пропсы
+  const genCount = useSelector(generationValue)
+
   const [grids, setGrid] = useState(() => {
     return [resetGameField()]
   })
@@ -33,6 +34,8 @@ function App() {
     [-1, 0],
   ]
 
+  const currentGrid = grids[grids.length - 1]
+
   function setGridHandler(newGrid) {
     setGrid(newGrid)
   }
@@ -45,15 +48,22 @@ function App() {
     return rows
   }
 
+  // check if all cells are dead
+    const checkCells = () => {
+      return currentGrid.every(row =>
+        row.every(cell => cell === 0)
+      )
+    }
+
   const step = prevGrid =>
     prevGrid.map((row, i) =>
       row.map((cell, j) => {
         let neighbors = 0
         operations.forEach(([x, y]) => {
-          let updatedI = i + x
-          let updatedJ = j + y
-          if (updatedI >= 0 && updatedI < numRows && updatedJ >= 0 && updatedJ < numCols) {
-            neighbors += prevGrid[updatedI][updatedJ]
+          let newI = i + x
+          let newJ = j + y
+          if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
+            neighbors += prevGrid[newI][newJ]
           }
         })
 
@@ -71,6 +81,12 @@ function App() {
   const stepForward = () => {
     dispatch(incrementGen())
     setGrid([...grids, step(grids[grids.length - 1])])
+    
+    // stop game if all cells are dead
+    if (checkCells()) {
+      dispatch(toggleRunning(false))
+      dispatch(resetGen())
+    }
   }
 
   const stepBack = () => {
@@ -90,35 +106,35 @@ function App() {
     }
   }, [running, stepForward])
 
-  const currentGrid = grids[grids.length - 1]
-
   return (
     <>
-    <Outlet />
-      <div
-        className="grid-field"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${numCols}, 20px)`,
-        }}
-      >
-        {currentGrid.map((rows, r) => {
-          return rows.map((col, c) => {
-            return (
-              <div
-                className="grid-cell"
-                key={r + c}
-                onClick={() => {
-                  const newGrid = [...currentGrid]
-                  newGrid[r][c] = currentGrid[r][c] ? 0 : 1
-                  setGrid([...grids.slice(0, -1), newGrid])
-                }}
-                style={{ backgroundColor: currentGrid[r][c] ? 'yellow' : undefined }}
-              ></div>
-            )
-          })
-        })}
-        <Controls stepForward={stepForward} stepBack={stepBack} />
+      <Outlet />
+      <div className="grid-field-container">
+        <div
+          className="grid-field"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${numCols}, 20px)`,
+          }}
+        >
+          {currentGrid.map((rows, r) =>
+            rows.map((col, c) => {
+              return (
+                <div
+                  className="grid-cell"
+                  key={r + c}
+                  onClick={() => {
+                    const newGrid = [...currentGrid]
+                    newGrid[r][c] = currentGrid[r][c] ? 0 : 1
+                    setGrid([...grids.slice(0, -1), newGrid])
+                  }}
+                  style={{ backgroundColor: currentGrid[r][c] ? 'yellow' : undefined }}
+                ></div>
+              )
+            })
+          )}
+          <Controls stepForward={stepForward} stepBack={stepBack} checkCells={checkCells} />
+        </div>
       </div>
       <ButtonsPanel resetGameField={resetGameField} setGridHandler={setGridHandler} />
     </>
