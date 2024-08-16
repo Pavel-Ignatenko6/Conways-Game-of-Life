@@ -10,7 +10,9 @@ export function Layout() {
         <h1>Conway's Game of Life</h1>
       </div>
       {/* Outlet renders children routes */}
-      <Outlet />
+      <div className='page-content'>
+        <Outlet />
+      </div>
       {/* footer */}
       <div className={styles.footer}>
         <span className={styles['footer-text']}>

@@ -12,7 +12,7 @@ export const Settings = () => {
         <dl className={styles['single-list']}>
           <span className={styles.subheading}>Icon Type :</span>
           {iconTypes.map(iconType => (
-            <dt className={styles['single-option']}>
+            <dt className={styles['single-option']} key={iconType}>
               <input type="radio" name="icon-type" id={iconType} defaultChecked />
               <label htmlFor={iconType}>{iconType}</label>
             </dt>
@@ -22,7 +22,7 @@ export const Settings = () => {
         <dl className={styles['single-list']}>
           <span className={styles.subheading}>Number of cells :</span>
           {cellsAxes.map(axis => (
-            <dt className={styles['cells-number-wrapper']}>
+            <dt className={styles['cells-number-wrapper']} key={axis}>
               <label htmlFor={axis}>{axis}</label>
               <input type="number" name={axis} id={axis} />
             </dt>
