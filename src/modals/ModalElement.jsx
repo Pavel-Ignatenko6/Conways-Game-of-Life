@@ -13,7 +13,7 @@ export const ModalElement = ({ children }) => {
             <img className={styles['close-icon']} src={closeIcon} alt="close icon" />
           </button>
         </div>
-        {children}
+        <div className="children-container">{children}</div>
       </div>
     </div>
   )
