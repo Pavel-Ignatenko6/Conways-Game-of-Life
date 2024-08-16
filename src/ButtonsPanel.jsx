@@ -9,25 +9,27 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   const dispatch = useDispatch()
   const running = useSelector(runningValue)
   return (
-    <div className="buttons-panel">
-      <button className="check-rules-btn btn">
-        <Link to="/rules">Check rules</Link>
-      </button>
-      <button
-        className="clear-btn btn"
-        onClick={() => {
-          if (running) {
-            dispatch(toggleRunning())
-          }
-          setGridHandler([resetGameField()])
-          dispatch(resetGen())
-        }}
-      >
-        Clear
-      </button>
-      <button className="settings-btn btn">
-        <Link to="/settings">Settings</Link>
-      </button>
+    <div className="buttons-panel-background">
+      <div className="buttons-panel">
+        <Link to="/rules" className="check-rules-btn btn link">
+          <span className="link-name">Check rules</span>
+        </Link>
+        <button
+          className="clear-btn btn"
+          onClick={() => {
+            if (running) {
+              dispatch(toggleRunning())
+            }
+            setGridHandler([resetGameField()])
+            dispatch(resetGen())
+          }}
+        >
+          Clear
+        </button>
+        <Link to="/settings" className="settings-btn btn link">
+          <span className="link-name">Settings</span>
+        </Link>
+      </div>
     </div>
   )
 }
