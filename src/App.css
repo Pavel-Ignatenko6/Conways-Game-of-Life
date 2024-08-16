@@ -4,13 +4,13 @@
   padding: 0;
 }
 
-body {
-  overflow: hidden;
+.grid-field-container {
+  display: flex;
+  justify-content: center;
 }
 
 .grid-field {
   position: relative;
-  width: 100%;
   background: rgb(220, 219, 219);
 }
 

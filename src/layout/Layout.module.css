@@ -1,13 +1,15 @@
 .layout-container {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  justify-content: space-between;
 }
 
 
 .header,
 .footer {
   background-color: #0fc390;
+  height: 4rem;
 }
 
 
@@ -17,7 +19,6 @@ Footer
 
 .footer {
   position: relative;
-  height: 4rem;
   text-align: center;
 }
 
