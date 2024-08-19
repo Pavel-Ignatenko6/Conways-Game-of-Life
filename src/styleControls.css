@@ -12,6 +12,7 @@
   border: 3px solid blue;
   background-color: rgb(166, 162, 162);
   padding: 5rem;
+  user-select: none;
 }
 
 .flex-container {
@@ -48,12 +49,8 @@
 }
 
 .slider-controls {
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 0 1rem 0 1rem;
-}
-
-.single-slider {
-  display: flex;
-  margin: 0.2rem 0;
+  margin: 0 1.5rem 0 1rem;
 }
