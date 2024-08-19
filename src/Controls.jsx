@@ -25,12 +25,17 @@ export const Controls = ({ stepForward, stepBack }) => {
       </div>
       {/* main controls */}
       <div className="main-controls flex-container">
-        <img className="previous-icon controls-icon" src={prevNextIcon} alt="arrow left" onClick={() => {
-          if (running) {
-            dispatch(toggleRunning())
-          }
-          stepBack()
-        }} />
+        <img
+          className="previous-icon controls-icon"
+          src={prevNextIcon}
+          alt="arrow left"
+          onClick={() => {
+            if (running) {
+              dispatch(toggleRunning())
+            }
+            stepBack()
+          }}
+        />
 
         {/* play / Stop icons */}
         {running ? (
@@ -52,17 +57,9 @@ export const Controls = ({ stepForward, stepBack }) => {
           }}
         />
       </div>
-      {/* slider controls */}
       <div className="slider-controls flex-container">
-        {/* put two sliders here */}
-        <div className="single-slider">
-          <img className="single-icon" src={speedIcon} alt="speed icon" />
-          <Slider />
-        </div>
-        <div className="single-slider">
-          <img className="single-icon" src={zoomIcon} alt="zoom icon" />
-          <Slider />
-        </div>
+        <Slider icon={speedIcon} name={'speed'} />
+        <Slider icon={zoomIcon} name={'zoom'} />
       </div>
     </div>
   )
