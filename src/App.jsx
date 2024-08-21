@@ -92,6 +92,9 @@ function App() {
   }
 
   const stepBack = () => {
+    if (genCount === 0) {
+      return
+    }
     dispatch(decrementGen())
     // delete the last grid from the array of arrays
     setGrid(grids.slice(0, -1))
