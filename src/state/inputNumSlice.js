@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const inputNumSlice = createSlice({
   name: 'inputNum',
   initialState: {
-    speed: 50,
-    zoom: 50,
+    speed: 250,
+    zoom: 250,
   },
   reducers: {
     setInputNum: (state, action) => {

@@ -6,6 +6,7 @@ import { Controls } from './Controls.jsx'
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js'
+import { inputNumValue } from './state/inputNumSlice.js'
 
 import { Outlet } from 'react-router-dom'
 
@@ -22,6 +23,7 @@ function App() {
   // a state value from the store
   const dispatch = useDispatch()
   const running = useSelector(runningValue)
+  const inputValue = useSelector(inputNumValue)
 
   const operations = [
     [0, 1],
@@ -99,7 +101,7 @@ function App() {
     let id
 
     if (running) {
-      id = setInterval(stepForward, 100)
+      id = setInterval(stepForward, inputValue.speed)      
     }
     return () => {
       clearInterval(id)

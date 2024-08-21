@@ -1,11 +1,14 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { setInputNum, inputNumValue } from '../state/inputNumSlice.js'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { setInputNum } from '../state/inputNumSlice.js'
 
 import styles from './Slider.module.css'
 export const Slider = ({ icon, name }) => {
+  const [percent, setPercent] = useState(50)
+
   const dispatch = useDispatch()
-  const sliderVal = useSelector(inputNumValue)
-  
+  const num = 500
+
   return (
     <div className={styles['slider-container']}>
       <img className={styles['slider-icon']} src={icon} alt="icon" />
@@ -13,12 +16,15 @@ export const Slider = ({ icon, name }) => {
         <input
           className={styles['slider-input']}
           type="range"
-          min="0"
+          min="1"
           max="100"
-          onInput={e => dispatch(setInputNum({[name]: e.target.value}))}
+          onInput={e => {
+            setPercent(e.target.value)
+            dispatch(setInputNum({ [name]: (num / 100) * e.target.value }))
+          }}
         />
       </div>
-      <div className={styles['slider-value']}>{sliderVal[name]}</div>
+      <div className={styles['slider-value']}>{percent}</div>
     </div>
   )
 }
