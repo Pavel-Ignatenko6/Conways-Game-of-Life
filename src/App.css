@@ -4,6 +4,13 @@
   padding: 0;
 }
 
+.modal-heading {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 .grid-field-container {
   display: flex;
   justify-content: center;

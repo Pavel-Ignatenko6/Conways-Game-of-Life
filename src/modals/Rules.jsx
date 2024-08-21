@@ -12,7 +12,7 @@ const rulesList = {
 export const Rules = () => {
   return (
     <div>
-      <span className={styles.heading}>Conway's Game of Life</span>
+      <span className="modal-heading">Conway's Game of Life</span>
       <p className={styles.paragraph}>
         'The Game of Life is not your typical computer game. It is a cellular automaton, and was invented by Cambridge mathematician John
         Conway.'

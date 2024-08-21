@@ -6,7 +6,7 @@ const cellsAxes = ['Y-axis', 'X-axis']
 export const Settings = () => {
   return (
     <div>
-      <span className={styles.heading}>Settings</span>
+      <span className="modal-heading">Settings</span>
       {/* icon type */}
       <div className={styles['settings-lists']}>
         <dl className={styles['single-list']}>
