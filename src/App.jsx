@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react'
 import './App.css'
+import { useState, useEffect } from 'react'
+import { Outlet } from 'react-router-dom'
+// components
 import { ButtonsPanel } from './ButtonsPanel.jsx'
 import { Controls } from './Controls.jsx'
-
+// redux
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js'
 import { inputNumValue } from './state/inputNumSlice.js'
-
-import { Outlet } from 'react-router-dom'
+// helpers
+import { addToLocalStorage, getFromLocalStorage } from './helpers/handleLocalStorage.js'
 
 function App() {
   const numCols = 75
@@ -51,11 +53,24 @@ function App() {
   }
 
   // check if all cells are dead
-    const checkCells = () => {
-      return currentGrid.every(row =>
-        row.every(cell => cell === 0)
-      )
+  const checkCells = () => {
+    return currentGrid.every(row => row.every(cell => cell === 0))
+  }
+
+  const handleRecords = () => {
+    if (genCount === 0) {
+      return
     }
+    // get records from local storage
+    const records = getFromLocalStorage('records')
+    if (records) {
+      // add records if local storage exists
+      addToLocalStorage('records', [...records, genCount])
+    } else {
+      // ... else create one
+      addToLocalStorage('records', [genCount])
+    }
+  }
 
   const step = prevGrid =>
     prevGrid.map((row, i) =>
@@ -83,10 +98,12 @@ function App() {
   const stepForward = () => {
     dispatch(incrementGen())
     setGrid([...grids, step(grids[grids.length - 1])])
-    
+
     // stop game if all cells are dead
     if (checkCells()) {
       dispatch(toggleRunning(false))
+      // add a record to the local storage
+      handleRecords()
       dispatch(resetGen())
     }
   }
@@ -104,7 +121,7 @@ function App() {
     let id
 
     if (running) {
-      id = setInterval(stepForward, inputValue.speed)      
+      id = setInterval(stepForward, inputValue.speed)
     }
     return () => {
       clearInterval(id)
