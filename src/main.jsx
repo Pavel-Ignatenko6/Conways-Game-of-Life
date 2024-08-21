@@ -14,6 +14,7 @@ import { NotFoundPage } from './ErrorPage/NotFoundPage.jsx'
 import { ModalElement } from './modals/ModalElement.jsx'
 import { Rules } from './modals/Rules.jsx'
 import { Settings } from './modals/Settings.jsx'
+import { Records } from './modals/Records.jsx'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: '/',
         element: <App />,
         children: [
+          {
+            path: '/records',
+            element: <ModalElement children={<Records />} />,
+          },
           {
             path: '/rules',
             element: <ModalElement children={<Rules />} />,

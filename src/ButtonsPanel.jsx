@@ -11,6 +11,9 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   return (
     <div className="buttons-panel-background">
       <div className="buttons-panel">
+        <Link to="/records" className="records-btn btn link">
+          <span className="link-name">Records</span>
+        </Link>
         <Link to="/rules" className="check-rules-btn btn link">
           <span className="link-name">Check rules</span>
         </Link>
