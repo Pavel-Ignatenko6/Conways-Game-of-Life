@@ -26,7 +26,11 @@ export const Rules = () => {
       <dl className={styles['rules-list']}>
         <span className={styles.subheading}>Rules :</span>
         {Object.values(rulesList).map(rule => {
-          return <dt className={styles['single-rule']} key={rule}>{rule}</dt>
+          return (
+            <dt className={styles['single-rule']} key={rule}>
+              {rule}
+            </dt>
+          )
         })}
       </dl>
     </div>
