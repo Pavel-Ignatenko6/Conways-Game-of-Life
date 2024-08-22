@@ -19,5 +19,13 @@
 }
 
 .single-record {
+  width: 5rem;
   display: flex;
+  justify-content: space-between;
+}
+
+.record-val {
+  display: block;
+  width: 2rem;
+  text-align: left;
 }
