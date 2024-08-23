@@ -20,7 +20,7 @@ export const Slider = ({ icon, name }) => {
           max="100"
           onInput={e => {
             setPercent(e.target.value)
-            dispatch(setInputNum({ [name]: (num / 100) * e.target.value }))
+            dispatch(setInputNum({ [name]: num - (num / 100) * percent }))
           }}
         />
       </div>
