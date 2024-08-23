@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js'
 import { inputNumValue } from './state/inputNumSlice.js'
+import { showModalValue } from './state/showModalSlice.js'
 // helpers
 import { addToLocalStorage, getFromLocalStorage } from './helpers/handleLocalStorage.js'
 
@@ -16,16 +17,19 @@ function App() {
   const numCols = 75
   const numRows = 35
 
-  const genCount = useSelector(generationValue)
-
   const [grids, setGrid] = useState(() => {
     return [resetGameField()]
   })
 
-  // a state value from the store
+  // redux states values
   const dispatch = useDispatch()
+  const genCount = useSelector(generationValue)
   const running = useSelector(runningValue)
   const inputValue = useSelector(inputNumValue)
+  const showModal = useSelector(showModalValue)
+
+  // set overflow hidden for modal
+  showModal ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto')
 
   const operations = [
     [0, 1],

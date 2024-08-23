@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { runningValue, toggleRunning } from './state/runningSlice.js'
 import { resetGen } from './state/generationCountSlice.js'
+import { toggleShowModal } from './state/showModalSlice.js'
 
 export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   const dispatch = useDispatch()
@@ -11,10 +12,10 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   return (
     <div className="buttons-panel-background">
       <div className="buttons-panel">
-        <Link to="/records" className="records-btn btn link">
+        <Link to="/records" className="records-btn btn link" onClick={() => dispatch(toggleShowModal())}>
           <span className="link-name">Records</span>
         </Link>
-        <Link to="/rules" className="check-rules-btn btn link">
+        <Link to="/rules" className="check-rules-btn btn link" onClick={() => dispatch(toggleShowModal())}>
           <span className="link-name">Check rules</span>
         </Link>
         <button
@@ -29,7 +30,7 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
         >
           Clear
         </button>
-        <Link to="/settings" className="settings-btn btn link">
+        <Link to="/settings" className="settings-btn btn link" onClick={() => dispatch(toggleShowModal())}>
           <span className="link-name">Settings</span>
         </Link>
       </div>
