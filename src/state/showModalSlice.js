@@ -8,7 +8,6 @@ const showModalSlice = createSlice({
   reducers: {
     toggleShowModal: state => {
       state.value = !state.value
-      console.log(state.value);
     },
   }
 })

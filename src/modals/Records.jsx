@@ -46,9 +46,9 @@ export const Records = () => {
       <div className={styles['records-list-container']}>
         <span className={styles.recordsText}>Last 3 tries :</span>
         <ul className={styles['records-list']}>
-          {getLastThreeRecords().map(record => {
+          {getLastThreeRecords().map((record, index) => {
             return (
-              <li className={styles['single-record']} key={record}>
+              <li className={styles['single-record']} key={index}>
                 <span className={styles['record-num']}>{'-'}</span>
                 <span className={styles['record-val']}>{record}</span>
               </li>
