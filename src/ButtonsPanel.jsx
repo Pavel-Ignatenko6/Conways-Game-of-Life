@@ -22,7 +22,7 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
           className="clear-btn btn"
           onClick={() => {
             if (running) {
-              dispatch(toggleRunning())
+              dispatch(toggleRunning(true))
             }
             setGridHandler([resetGameField()])
             dispatch(resetGen())

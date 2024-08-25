@@ -10,7 +10,7 @@ export const ModalElement = ({ children }) => {
   const dispatch = useDispatch()
 
   const handleModalClose = () => {
-    dispatch(toggleShowModal())
+    dispatch(toggleShowModal(false))
     navigate('/')
   }
 
