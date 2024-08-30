@@ -3,6 +3,7 @@ import runningReducer from './runningSlice'
 import generationCountReducer from './generationCountSlice'
 import inputNumReducer from './inputNumSlice'
 import showModalReducer from './showModalSlice'
+import numRowsColsReducer from './numRowsColsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     generationCount: generationCountReducer,
     inputNum: inputNumReducer,
     showModal: showModalReducer,
+    numRowsCols: numRowsColsReducer,
   },
 })
