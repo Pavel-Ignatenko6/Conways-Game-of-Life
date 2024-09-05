@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 // components
 import { ButtonsPanel } from './ButtonsPanel.jsx';
 import { Controls } from './Controls.jsx';
@@ -9,11 +9,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { runningValue, toggleRunning } from './state/runningSlice.js';
 import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js';
 import { inputNumValue } from './state/inputNumSlice.js';
-import { showModalValue } from './state/showModalSlice.js';
 import { numRowsColsValue } from './state/numRowsColsSlice.js';
+import { fieldTypeValue } from './state/fieldTypeSlice.js';
+import { svgTypeValue } from './state/svgTypeSlice.js';
 // helpers
 import { addToLocalStorage, getFromLocalStorage } from './helpers/handleLocalStorage.js';
 import { checkCells } from './helpers/checkCells.js';
+// svgs
+import bearIcon from './assets/cells/bear-icon.svg';
+import catIcon from './assets/cells/cat-icon.svg';
+import duckIcon from './assets/cells/duck-icon.svg';
+import foxIcon from './assets/cells/fox-icon.svg';
 
 function App() {
   // redux states values
@@ -21,19 +27,19 @@ function App() {
   const genCount = useSelector(generationValue);
   const running = useSelector(runningValue);
   const inputValue = useSelector(inputNumValue);
-  const showModal = useSelector(showModalValue);
   const rowsColsVal = useSelector(numRowsColsValue);
+  const fieldTypeVal = useSelector(fieldTypeValue);
+  const svgTypeVal = useSelector(svgTypeValue);
 
   const numRows = rowsColsVal.rows;
   const numCols = rowsColsVal.cols;
+
+  const location = useLocation();
 
   // local state
   const [grids, setGrid] = useState(() => {
     return [resetGameField()];
   });
-
-  // set overflow hidden for modal
-  showModal ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
 
   const operations = [
     [0, 1],
@@ -46,7 +52,22 @@ function App() {
     [-1, 0],
   ];
 
+  const cellSvgs = [
+    ['bearIcon', bearIcon],
+    ['catIcon', catIcon],
+    ['duckIcon', duckIcon],
+    ['foxIcon', foxIcon],
+  ];
+
   const currentGrid = grids[grids.length - 1];
+
+  useEffect(() => {
+    const modals = ['/settings', '/rules', '/records'];
+    // check if modal is active and change overflow style
+    modals.some(modal => location.pathname.includes(modal))
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto');
+  }, [location.pathname]);
 
   function setGridHandler(newGrid) {
     setGrid(newGrid);
@@ -131,6 +152,29 @@ function App() {
     };
   }, [running, stepForward]);
 
+  const handleIconStyle = aliveCell => {
+    if (fieldTypeVal === 'canvas') {
+      return { background: aliveCell ? 'yellow' : undefined };
+    } else {
+      return { background: aliveCell ? 'transparent' : undefined };
+    }
+  };
+
+  const handleSvgRender = grid => {
+    if (fieldTypeVal === 'svg') {
+      if (grid) {
+        return cellSvgs.map(([name, svg]) =>
+          name === svgTypeVal ? (
+            <img
+              src={svg}
+              alt={name}
+            />
+          ) : undefined
+        );
+      }
+    }
+  };
+
   return (
     <>
       <Outlet />
@@ -146,15 +190,19 @@ function App() {
             rows.map((col, c) => {
               return (
                 <div
-                  className='grid-cell'
+                  className={fieldTypeVal === 'canvas' ? 'grid-cell' : fieldTypeVal === 'text' ? 'grid-cell-text' : 'grid-cell-svg'}
                   key={r + c}
                   onClick={() => {
                     const newGrid = [...currentGrid];
                     newGrid[r][c] = currentGrid[r][c] ? 0 : 1;
                     setGrid([...grids.slice(0, -1), newGrid]);
                   }}
-                  style={{ backgroundColor: currentGrid[r][c] ? 'yellow' : undefined }}
-                ></div>
+                  // менять тип клетки в зависимости от состояния
+                  style={handleIconStyle(currentGrid[r][c])}
+                >
+                  {fieldTypeVal === 'text' ? (currentGrid[r][c] ? Math.ceil(Math.random() * 10) : undefined) : undefined}
+                  {handleSvgRender(currentGrid[r][c])}
+                </div>
               );
             })
           )}
