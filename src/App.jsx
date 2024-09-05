@@ -6,7 +6,7 @@ import { ButtonsPanel } from './ButtonsPanel.jsx';
 import { Controls } from './Controls.jsx';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { runningValue, toggleRunning } from './state/runningSlice.js';
+import { runningValue, toggleRunning, setRunning } from './state/runningSlice.js';
 import { decrementGen, incrementGen, resetGen, generationValue } from './state/generationCountSlice.js';
 import { inputNumValue } from './state/inputNumSlice.js';
 import { numRowsColsValue } from './state/numRowsColsSlice.js';
@@ -64,9 +64,11 @@ function App() {
   useEffect(() => {
     const modals = ['/settings', '/rules', '/records'];
     // check if modal is active and change overflow style
-    modals.some(modal => location.pathname.includes(modal))
-      ? (document.body.style.overflow = 'hidden')
-      : (document.body.style.overflow = 'auto');
+    const isOpened = modals.some(modal => location.pathname.includes(modal));
+    isOpened ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
+    // pause the game when modal is opened
+    isOpened ? dispatch(setRunning(false)) : undefined;
+    
   }, [location.pathname]);
 
   function setGridHandler(newGrid) {
@@ -80,6 +82,15 @@ function App() {
     }
     return rows;
   }
+
+  // reset game field when rows and cols change
+  useEffect(() => {
+    if (!checkCells(currentGrid)) {
+      dispatch(toggleRunning(false));
+      setGrid([resetGameField()]);
+      dispatch(resetGen());
+    }
+  }, [rowsColsVal]);
 
   const handleRecords = () => {
     if (genCount === 0) {
