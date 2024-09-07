@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const numRowsColsSlice = createSlice({
   name: 'numRowsCols',
@@ -8,15 +8,17 @@ const numRowsColsSlice = createSlice({
   },
   reducers: {
     setNumRowsCols: (state, action) => {
-      return (state = {
+      const { rows, cols } = action.payload;
+      return {
         ...state,
-        ...action.payload,
-      })
+        rows: rows ? parseInt(rows) : state.rows,
+        cols: cols ? parseInt(cols) : state.cols,
+      };
     },
   },
-})
+});
 
-export const { setNumRowsCols } = numRowsColsSlice.actions
-export default numRowsColsSlice.reducer
+export const { setNumRowsCols } = numRowsColsSlice.actions;
+export default numRowsColsSlice.reducer;
 
-export const numRowsColsValue = state => state.numRowsCols
+export const numRowsColsValue = state => state.numRowsCols;
