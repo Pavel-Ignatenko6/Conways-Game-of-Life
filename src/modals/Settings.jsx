@@ -1,5 +1,4 @@
 import styles from './Settings.module.css';
-
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { setNumRowsCols, numRowsColsValue } from '../state/numRowsColsSlice';
@@ -81,19 +80,19 @@ export const Settings = () => {
         {/* cells number */}
         <span className={styles.subheading}>Number of cells :</span>
         <dl className={`${styles['single-list']} ${styles['cells-list']}`}>
-          {cellsAxes.map(axis => (
+          {cellsAxes.map(([label, axis]) => (
             <dt
               className={styles['cells-number-wrapper']}
-              key={axis[1]}
+              key={axis}
             >
-              <label htmlFor={axis[0]}>{axis[0]}</label>
+              <label htmlFor={label}>{label}</label>
               <input
                 className={styles['cells-number-input']}
                 type='number'
-                name={axis[1]}
-                id={axis[1]}
-                value={numColsRowsVal[axis[1]]}
-                onInput={e => dispatch(setNumRowsCols({ [axis[1]]: e.target.value }))}
+                name={axis}
+                id={axis}
+                value={numColsRowsVal[axis]}
+                onChange={e => dispatch(setNumRowsCols({ [axis]: e.target.value }))}
               />
             </dt>
           ))}
