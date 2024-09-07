@@ -1,4 +1,4 @@
-.controls-container {
+.controls-panel {
   position: absolute;
   bottom: 10%;
   left: 80%;
@@ -7,7 +7,7 @@
   flex-direction: column-reverse;
   justify-content: center;
   align-items: center;
-  width: 12%;
+  max-width: 12rem;
   height: 9rem;
   border: 3px solid blue;
   background-color: rgb(166, 162, 162);

@@ -68,7 +68,6 @@ function App() {
     isOpened ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
     // pause the game when modal is opened
     isOpened ? dispatch(setRunning(false)) : undefined;
-    
   }, [location.pathname]);
 
   function setGridHandler(newGrid) {
@@ -78,18 +77,16 @@ function App() {
   function resetGameField() {
     const rows = [];
     for (let i = 0; i < numRows; i++) {
-      rows.push(Array.from(Array(numCols), () => 0));
+      rows.push(new Array(numCols).fill(0));
     }
     return rows;
   }
 
   // reset game field when rows and cols change
   useEffect(() => {
-    if (!checkCells(currentGrid)) {
-      dispatch(toggleRunning(false));
-      setGrid([resetGameField()]);
-      dispatch(resetGen());
-    }
+    dispatch(toggleRunning(false));
+    setGrid([resetGameField()]);
+    dispatch(resetGen());
   }, [rowsColsVal]);
 
   const handleRecords = () => {
@@ -189,38 +186,40 @@ function App() {
   return (
     <>
       <Outlet />
-      <div className='grid-field-container'>
-        <div
-          className='grid-field'
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${numCols}, 20px)`,
-          }}
-        >
-          {currentGrid.map((rows, r) =>
-            rows.map((col, c) => {
-              return (
-                <div
-                  className={fieldTypeVal === 'canvas' ? 'grid-cell' : fieldTypeVal === 'text' ? 'grid-cell-text' : 'grid-cell-svg'}
-                  key={r + c}
-                  onClick={() => {
-                    const newGrid = [...currentGrid];
-                    newGrid[r][c] = currentGrid[r][c] ? 0 : 1;
-                    setGrid([...grids.slice(0, -1), newGrid]);
-                  }}
-                  // менять тип клетки в зависимости от состояния
-                  style={handleIconStyle(currentGrid[r][c])}
-                >
-                  {fieldTypeVal === 'text' ? (currentGrid[r][c] ? Math.ceil(Math.random() * 10) : undefined) : undefined}
-                  {handleSvgRender(currentGrid[r][c])}
-                </div>
-              );
-            })
-          )}
-          <Controls
-            stepForward={stepForward}
-            stepBack={stepBack}
-          />
+      <div className="field-background">
+        <div className='grid-field-container'>
+          <div
+            className='grid-field'
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${numCols}, 20px)`,
+            }}
+          >
+            {currentGrid.map((rows, r) =>
+              rows.map((col, c) => {
+                return (
+                  <div
+                    className={fieldTypeVal === 'canvas' ? 'grid-cell' : fieldTypeVal === 'text' ? 'grid-cell-text' : 'grid-cell-svg'}
+                    key={r + c}
+                    onClick={() => {
+                      const newGrid = [...currentGrid];
+                      newGrid[r][c] = currentGrid[r][c] ? 0 : 1;
+                      setGrid([...grids.slice(0, -1), newGrid]);
+                    }}
+                    // менять тип клетки в зависимости от состояния
+                    style={handleIconStyle(currentGrid[r][c])}
+                  >
+                    {fieldTypeVal === 'text' ? (currentGrid[r][c] ? Math.ceil(Math.random() * 10) : undefined) : undefined}
+                    {handleSvgRender(currentGrid[r][c])}
+                  </div>
+                );
+              })
+            )}
+            <Controls
+              stepForward={stepForward}
+              stepBack={stepBack}
+            />
+          </div>
         </div>
       </div>
       <ButtonsPanel

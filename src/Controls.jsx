@@ -18,49 +18,47 @@ export const Controls = ({ stepForward, stepBack }) => {
   const genCount = useSelector(generationValue)
 
   return (
-    <div className="controls-container">
-      <div className="generation-number flex-container">
-        <img className="single-icon" src={generationIcon} alt="generation icon" />
-        <span>{genCount}</span>
+      <div className="controls-panel">
+        <div className="generation-number flex-container">
+          <img className="single-icon" src={generationIcon} alt="generation icon" />
+          <span>{genCount}</span>
+        </div>
+        {/* main controls */}
+        <div className="main-controls flex-container">
+          <img
+            className="previous-icon controls-icon"
+            src={prevNextIcon}
+            alt="arrow left"
+            onClick={() => {
+              if (running) {
+                dispatch(toggleRunning())
+              }
+              stepBack()
+            }}
+          />
+          {/* play / Stop icons */}
+          {running ? (
+            <img className="controls-icon" src={pauseIcon} alt="pause icon" onClick={() => dispatch(toggleRunning())} />
+          ) : (
+            <img className="play-icon controls-icon" src={playIcon} alt="play icon" onClick={() => dispatch(toggleRunning())} />
+          )}
+          {/* end of play / Stop icons */}
+          <img
+            className="next-icon controls-icon"
+            src={prevNextIcon}
+            alt="arrow right"
+            onClick={() => {
+              if (running) {
+                dispatch(toggleRunning())
+              }
+              stepForward()
+            }}
+          />
+        </div>
+        <div className="slider-controls flex-container">
+          <Slider icon={speedIcon} name={'speed'} />
+          <Slider icon={zoomIcon} name={'zoom'} />
+        </div>
       </div>
-      {/* main controls */}
-      <div className="main-controls flex-container">
-        <img
-          className="previous-icon controls-icon"
-          src={prevNextIcon}
-          alt="arrow left"
-          onClick={() => {
-            if (running) {
-              dispatch(toggleRunning())
-            }
-            stepBack()
-          }}
-        />
-
-        {/* play / Stop icons */}
-        {running ? (
-          <img className="controls-icon" src={pauseIcon} alt="pause icon" onClick={() => dispatch(toggleRunning())} />
-        ) : (
-          <img className="play-icon controls-icon" src={playIcon} alt="play icon" onClick={() => dispatch(toggleRunning())} />
-        )}
-        {/* end of play / Stop icons */}
-
-        <img
-          className="next-icon controls-icon"
-          src={prevNextIcon}
-          alt="arrow right"
-          onClick={() => {
-            if (running) {
-              dispatch(toggleRunning())
-            }
-            stepForward()
-          }}
-        />
-      </div>
-      <div className="slider-controls flex-container">
-        <Slider icon={speedIcon} name={'speed'} />
-        <Slider icon={zoomIcon} name={'zoom'} />
-      </div>
-    </div>
   )
 }
