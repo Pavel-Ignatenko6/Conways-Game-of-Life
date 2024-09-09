@@ -1,5 +1,5 @@
 .controls-panel {
-  position: absolute;
+  position: sticky;
   bottom: 10%;
   left: 80%;
   transform: translateX(-50%);
@@ -13,6 +13,7 @@
   background-color: rgb(166, 162, 162);
   padding: 5rem;
   user-select: none;
+  margin-top: -11rem;
 }
 
 .flex-container {
