@@ -11,8 +11,7 @@ const numRowsColsSlice = createSlice({
       const { rows, cols } = action.payload;
       return {
         ...state,
-        rows: rows ? parseInt(rows) : state.rows,
-        cols: cols ? parseInt(cols) : state.cols,
+        ...action.payload,
       };
     },
   },

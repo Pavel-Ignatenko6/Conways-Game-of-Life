@@ -29,6 +29,14 @@ export const Settings = () => {
   const fieldTypeVal = useSelector(fieldTypeValue);
   const svgTypeVal = useSelector(svgTypeValue);
 
+  const handleCellsNumberInput = (e, axis) => {
+    if (e.target.value === '' || Number(e.target.value) < 1) {
+      return
+    }
+
+    Number(e.target.value) > 500 ? undefined : dispatch(setNumRowsCols({ [axis]: Number(e.target.value) }))
+  }
+
   return (
     <div>
       <span className='modal-heading'>Settings</span>
@@ -92,7 +100,7 @@ export const Settings = () => {
                 name={axis}
                 id={axis}
                 value={numColsRowsVal[axis]}
-                onChange={e => dispatch(setNumRowsCols({ [axis]: e.target.value }))}
+                onChange={e => handleCellsNumberInput(e, axis)}
               />
             </dt>
           ))}
@@ -101,3 +109,6 @@ export const Settings = () => {
     </div>
   );
 };
+
+
+
