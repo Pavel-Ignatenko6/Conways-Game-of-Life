@@ -65,7 +65,7 @@ function App() {
     const modals = ['/settings', '/rules', '/records'];
     // check if modal is active and change overflow style
     const isOpened = modals.some(modal => location.pathname.includes(modal));
-    isOpened ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'auto');
+    isOpened ? (document.body.style.overflowY = 'hidden') : (document.body.style.overflowY = 'auto');
     // pause the game when modal is opened
     isOpened ? dispatch(setRunning(false)) : undefined;
   }, [location.pathname]);
@@ -186,7 +186,7 @@ function App() {
   return (
     <>
       <Outlet />
-      <div className="field-background">
+      <div className='field-background'>
         <div className='grid-field-container'>
           <div
             className='grid-field'
@@ -206,7 +206,6 @@ function App() {
                       newGrid[r][c] = currentGrid[r][c] ? 0 : 1;
                       setGrid([...grids.slice(0, -1), newGrid]);
                     }}
-                    // менять тип клетки в зависимости от состояния
                     style={handleIconStyle(currentGrid[r][c])}
                   >
                     {fieldTypeVal === 'text' ? (currentGrid[r][c] ? Math.ceil(Math.random() * 10) : undefined) : undefined}
@@ -215,12 +214,12 @@ function App() {
                 );
               })
             )}
-            <Controls
-              stepForward={stepForward}
-              stepBack={stepBack}
-            />
           </div>
         </div>
+        <Controls
+          stepForward={stepForward}
+          stepBack={stepBack}
+        />
       </div>
       <ButtonsPanel
         resetGameField={resetGameField}
