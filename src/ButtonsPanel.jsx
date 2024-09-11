@@ -1,3 +1,4 @@
+import React from 'react';
 import './styleButtonsPanel.css';
 import { Link } from 'react-router-dom';
 
@@ -5,9 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { runningValue, toggleRunning } from './state/runningSlice.js';
 import { resetGen } from './state/generationCountSlice.js';
 
-export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
+export const ButtonsPanel = React.memo(({ resetGameField, setGridHandler }) => {
   const dispatch = useDispatch();
   const running = useSelector(runningValue);
+  
   return (
     <div className='buttons-panel-background'>
       <div className='buttons-panel'>
@@ -44,4 +46,4 @@ export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
       </div>
     </div>
   );
-};
+});

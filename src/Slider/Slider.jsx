@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
 import { setInputNum } from '../state/inputNumSlice.js'
 
 import styles from './Slider.module.css'
-export const Slider = ({ icon, name }) => {
+export const Slider = React.memo(({ icon, name }) => {
   const [percent, setPercent] = useState(50)
 
   const dispatch = useDispatch()
   const num = 500
-
+  
   return (
     <div className={styles['slider-container']}>
       <img className={styles['slider-icon']} src={icon} alt="icon" />
@@ -27,4 +28,4 @@ export const Slider = ({ icon, name }) => {
       <div className={styles['slider-value']}>{percent}</div>
     </div>
   )
-}
+})

@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 // components
 import { ButtonsPanel } from './ButtonsPanel.jsx';
@@ -36,6 +36,14 @@ function App() {
 
   const location = useLocation();
 
+  const resetGameField = useCallback(() => {
+    const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      rows.push(new Array(numCols).fill(0));
+    }
+    return rows;
+  }, [numRows, numCols]);
+
   // local state
   const [grids, setGrid] = useState(() => {
     return [resetGameField()];
@@ -61,7 +69,7 @@ function App() {
 
   const currentGrid = grids[grids.length - 1];
 
-  useEffect(() => {
+  useMemo(() => {
     const modals = ['/settings', '/rules', '/records'];
     // check if modal is active and change overflow style
     const isOpened = modals.some(modal => location.pathname.includes(modal));
@@ -70,17 +78,12 @@ function App() {
     isOpened ? dispatch(setRunning(false)) : undefined;
   }, [location.pathname]);
 
-  function setGridHandler(newGrid) {
-    setGrid(newGrid);
-  }
-
-  function resetGameField() {
-    const rows = [];
-    for (let i = 0; i < numRows; i++) {
-      rows.push(new Array(numCols).fill(0));
-    }
-    return rows;
-  }
+  const setGridHandler = useCallback(
+    newGrid => {
+      setGrid(newGrid);
+    },
+    [setGrid]
+  );
 
   // reset game field when rows and cols change
   useEffect(() => {
@@ -104,50 +107,56 @@ function App() {
     }
   };
 
-  const step = prevGrid =>
-    prevGrid.map((row, i) =>
-      row.map((cell, j) => {
-        let neighbors = 0;
-        operations.forEach(([x, y]) => {
-          let newI = i + x;
-          let newJ = j + y;
-          if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
-            neighbors += prevGrid[newI][newJ];
-          }
-        });
+  const step = useCallback(
+    prevGrid =>
+      prevGrid.map((row, i) =>
+        row.map((cell, j) => {
+          let neighbors = 0;
+          operations.forEach(([x, y]) => {
+            let newI = i + x;
+            let newJ = j + y;
+            if (newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols) {
+              neighbors += prevGrid[newI][newJ];
+            }
+          });
 
-        if (neighbors < 2 || neighbors > 3) {
-          return 0;
-        } else if (cell === 0 && neighbors === 3) {
-          return 1;
-        } else {
-          return cell;
-        }
-      })
-    );
+          if (neighbors < 2 || neighbors > 3) {
+            return 0;
+          } else if (cell === 0 && neighbors === 3) {
+            return 1;
+          } else {
+            return cell;
+          }
+        })
+      ),
+    [grids]
+  );
+
+  const deadCells = useMemo(() => checkCells(currentGrid), [currentGrid]);
 
   // start game and move it forward by a step
-  const stepForward = () => {
+
+  const stepForward = useCallback(() => {
     dispatch(incrementGen());
     setGrid([...grids, step(grids[grids.length - 1])]);
 
     // stop game if all cells are dead
-    if (checkCells(currentGrid)) {
+    if (deadCells) {
       dispatch(toggleRunning(false));
       // add a record to the local storage
       handleRecords();
       dispatch(resetGen());
     }
-  };
+  }, [grids, step, deadCells]);
 
-  const stepBack = () => {
+  const stepBack = useCallback(() => {
     if (genCount === 0) {
       return;
     }
     dispatch(decrementGen());
     // delete the last grid from the array of arrays
     setGrid(grids.slice(0, -1));
-  };
+  }, [genCount, grids]);
 
   useEffect(() => {
     let id;
@@ -160,28 +169,36 @@ function App() {
     };
   }, [running, stepForward]);
 
-  const handleIconStyle = aliveCell => {
-    if (fieldTypeVal === 'canvas') {
-      return { background: aliveCell ? 'yellow' : undefined };
-    } else {
-      return { background: aliveCell ? 'transparent' : undefined };
-    }
-  };
+  const handleIconStyle = useCallback(
+    aliveCell => {
+      if (fieldTypeVal === 'canvas') {
+        return { background: aliveCell ? 'yellow' : undefined };
+      } else {
+        return { background: aliveCell ? 'transparent' : undefined };
+      }
+    },
+    [fieldTypeVal]
+  );
 
-  const handleSvgRender = grid => {
-    if (fieldTypeVal === 'svg') {
-      if (grid) {
+  const handleTextSvgRender = useCallback(
+    grid => {
+      if (fieldTypeVal === 'text' && grid) {
+        return Math.ceil(Math.random() * 10);
+      }
+      if (fieldTypeVal === 'svg' && grid) {
         return cellSvgs.map(([name, svg]) =>
           name === svgTypeVal ? (
             <img
+              key={svg}
               src={svg}
               alt={name}
             />
           ) : undefined
         );
       }
-    }
-  };
+    },
+    [fieldTypeVal, svgTypeVal]
+  );
 
   return (
     <>
@@ -208,8 +225,7 @@ function App() {
                     }}
                     style={handleIconStyle(currentGrid[r][c])}
                   >
-                    {fieldTypeVal === 'text' ? (currentGrid[r][c] ? Math.ceil(Math.random() * 10) : undefined) : undefined}
-                    {handleSvgRender(currentGrid[r][c])}
+                    {handleTextSvgRender(currentGrid[r][c])}
                   </div>
                 );
               })
