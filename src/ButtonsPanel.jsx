@@ -6,10 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { runningValue, toggleRunning } from './state/runningSlice.js';
 import { resetGen } from './state/generationCountSlice.js';
 
-export const ButtonsPanel = React.memo(({ resetGameField, setGridHandler }) => {
+export const ButtonsPanel = ({ resetGameField, setGridHandler }) => {
   const dispatch = useDispatch();
   const running = useSelector(runningValue);
-  
+
   return (
     <div className='buttons-panel-background'>
       <div className='buttons-panel'>
@@ -46,4 +46,4 @@ export const ButtonsPanel = React.memo(({ resetGameField, setGridHandler }) => {
       </div>
     </div>
   );
-});
+};
