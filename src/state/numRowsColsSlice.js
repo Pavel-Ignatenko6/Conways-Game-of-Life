@@ -8,7 +8,6 @@ const numRowsColsSlice = createSlice({
   },
   reducers: {
     setNumRowsCols: (state, action) => {
-      const { rows, cols } = action.payload;
       return {
         ...state,
         ...action.payload,
