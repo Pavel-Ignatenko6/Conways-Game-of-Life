@@ -30,12 +30,14 @@ export const Settings = () => {
   const svgTypeVal = useSelector(svgTypeValue);
 
   const handleCellsNumberInput = (e, axis) => {
-    if (e.target.value === '' || Number(e.target.value) < 1) {
-      return
+    if (e.target.value === '') {
+      return;
     }
 
-    Number(e.target.value) > 500 ? undefined : dispatch(setNumRowsCols({ [axis]: Number(e.target.value) }))
-  }
+    Number(e.target.value) < 1 ? dispatch(setNumRowsCols({ [axis]: 1 })) : dispatch(setNumRowsCols({ [axis]: Number(e.target.value) }));
+
+    Number(e.target.value) > 50 ? dispatch(setNumRowsCols({ [axis]: 50 })) : undefined;
+  };
 
   return (
     <div>
@@ -109,6 +111,3 @@ export const Settings = () => {
     </div>
   );
 };
-
-
-

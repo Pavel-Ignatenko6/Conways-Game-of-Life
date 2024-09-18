@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const numRowsColsSlice = createSlice({
   name: 'numRowsCols',
   initialState: {
-    rows: 35,
-    cols: 75,
+    rows: 30,
+    cols: 30,
   },
   reducers: {
     setNumRowsCols: (state, action) => {
