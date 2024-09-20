@@ -24,7 +24,6 @@
 
 .grid-field-container {
   background-color: rgb(220, 219, 219);
-  height: 100%;
   display: flex;
   justify-content: center;
   border: 2px solid rgb(107, 107, 107);
@@ -40,5 +39,5 @@
 }
 
 .grid-cell-text {
-  border-style:dotted;
+  border-style: dotted;
 }
