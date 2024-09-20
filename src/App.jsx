@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 // components
 import { GameField } from './GameField.jsx';
 import { ButtonsPanel } from './ButtonsPanel.jsx';
+import { Controls } from './Controls.jsx';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { runningValue, toggleRunning, setRunning } from './state/runningSlice.js';
@@ -196,8 +197,6 @@ function App() {
   return (
     <>
       <GameField
-        stepForward={stepForward}
-        stepBack={stepBack}
         handleCellClick={handleCellClick}
         handleIconStyle={handleIconStyle}
         handleTextSvgRender={handleTextSvgRender}
@@ -206,6 +205,10 @@ function App() {
         numRows={numRows}
         currentGrid={currentGrid}
         fielfTypeVal={fieldTypeVal}
+      />
+      <Controls
+        stepForward={stepForward}
+        stepBack={stepBack}
       />
       <ButtonsPanel
         resetGameField={resetGameField}

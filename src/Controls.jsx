@@ -2,7 +2,7 @@ import React from 'react';
 import './styleControls.css';
 import { Slider } from './Slider/Slider.jsx';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { runningValue, toggleRunning } from './state/runningSlice.js';
 import { generationValue } from './state/generationCountSlice.js';
@@ -18,8 +18,9 @@ export const Controls = ({ stepForward, stepBack }) => {
   const dispatch = useDispatch();
   const running = useSelector(runningValue);
   const genCount = useSelector(generationValue);
+  const controlsRef = useRef(null);
 
-  const [coords, setCoords] = useState({ x: 1100, y: 400 });
+  const [coords, setCoords] = useState({ x: 1200, y: 400 });
   const [newCoords, setNewCoords] = useState({ x: 0, y: 0 });
 
   const onMouseMove = e => {
@@ -32,12 +33,16 @@ export const Controls = ({ stepForward, stepBack }) => {
   };
 
   const onMouseDown = e => {
+    if (e.target !== controlsRef.current) {
+      return;
+    }
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
   return (
     <div
+    ref={controlsRef}
       className='controls-panel'
       style={{
         top: coords.y + 'px',
@@ -46,7 +51,6 @@ export const Controls = ({ stepForward, stepBack }) => {
         offsetLeft: newCoords.x + 'px',
       }}
       onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
     >
       <div className='generation-number flex-container'>
         <img

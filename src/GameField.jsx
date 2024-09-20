@@ -1,9 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { Controls } from './Controls.jsx';
 
 export const GameField = ({
-  stepForward,
-  stepBack,
   handleCellClick,
   handleIconStyle,
   handleTextSvgRender,
@@ -39,10 +36,6 @@ export const GameField = ({
             )}
           </div>
         </div>
-        <Controls
-          stepForward={stepForward}
-          stepBack={stepBack}
-        />
       </div>
     </>
   );
