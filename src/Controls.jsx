@@ -21,36 +21,44 @@ export const Controls = ({ stepForward, stepBack }) => {
   const controlsRef = useRef(null);
 
   const [coords, setCoords] = useState({ x: 1200, y: 400 });
-  const [newCoords, setNewCoords] = useState({ x: 0, y: 0 });
 
-  const onMouseMove = e => {
-    setCoords({ x: e.clientX, y: e.clientY });
-    setNewCoords({ x: coords.x + e.clientX, y: coords.y + e.clientY });
-  };
-
-  const onMouseUp = e => {
-    document.removeEventListener('mousemove', onMouseMove);
-  };
-
-  const onMouseDown = e => {
+  const handleControlsDrag = e => {
     if (e.target !== controlsRef.current) {
       return;
     }
+    //  calculate the difference between the mouse cursor's position and the top-left of controls
+    let shiftX = e.clientX - controlsRef.current.getBoundingClientRect().left;
+    let shiftY = e.clientY - controlsRef.current.getBoundingClientRect().top;
+
+    const onMouseMove = e => {
+
+      const maxX = window.innerWidth - controlsRef.current.getBoundingClientRect().width;
+      const maxY = window.innerHeight - controlsRef.current.getBoundingClientRect().height;
+
+      // setting coords in the min and max range
+      setCoords({
+        x: Math.min(Math.max(e.clientX - shiftX, 0), maxX),
+        y: Math.min(Math.max(e.clientY - shiftY, 0), maxY),
+      });
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+    };
+
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
   return (
     <div
-    ref={controlsRef}
+      ref={controlsRef}
       className='controls-panel'
       style={{
         top: coords.y + 'px',
         left: coords.x + 'px',
-        offsetTop: newCoords.y + 'px',
-        offsetLeft: newCoords.x + 'px',
       }}
-      onMouseDown={onMouseDown}
+      onMouseDown={handleControlsDrag}
     >
       <div className='generation-number flex-container'>
         <img
